@@ -24,7 +24,7 @@ ui <- fluidPage(
                   choices = c( 1:4))
         ),
       
-      # Show a plot of the generated distribution
+      # Show a plot and outcome
       mainPanel(
         plotOutput("plot1"),
         h4("Diet:"),
@@ -37,13 +37,14 @@ ui <- fluidPage(
    )
 )
 
-# Define server logic required to draw a histogram
+# Define server logic required to draw the plot
 server <- function(input, output) {
+  # Define a fit (loess) in order to predict the outcome
   fit <- reactive ({loess(weight ~ Time, data = ChickWeight[ChickWeight$Diet == input$Diet,])})
   pred <- reactive ({predict(fit(), newdata = input$Time)})
    output$plot1 <- renderPlot({
 
-      # generate bins based on input$bins from ui.R
+      # generate plot based on input from ui.R
      ggplot() + 
        geom_point(data = ChickWeight, aes(x = Time, y = weight, colour = Diet)) +
        geom_smooth(data = ChickWeight[ChickWeight$Diet == input$Diet,], aes(x = Time, y = weight, colour = Diet), method = "loess") +
