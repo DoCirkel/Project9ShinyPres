@@ -6,5 +6,5 @@ Instead, everything is in the app.R file!
 
 So have a look there for both the ui and the server.
 
-~Thanks!~
+**Thanks!**
 
